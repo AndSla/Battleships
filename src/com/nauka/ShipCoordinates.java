@@ -31,10 +31,6 @@ public class ShipCoordinates {
         return errorMsg;
     }
 
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
-
     public boolean areValid(Ship ship) {
         int shipLength = ship.getShipType().getLength();
         String shipName = ship.getShipType().getName();

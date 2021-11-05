@@ -1,12 +1,10 @@
 package com.nauka;
 
 public class Ship {
-    private ShipType shipType;
-    private int length;
+    private final ShipType shipType;
 
     public Ship(ShipType shipType) {
         this.shipType = shipType;
-        this.length = shipType.getLength();
     }
 
     public ShipType getShipType() {

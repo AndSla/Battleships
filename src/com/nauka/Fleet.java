@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Fleet {
-    private final int numOfCarriers = 1;
-    private final int numOfBattleships = 1;
-    private final int numOfSubmarines = 1;
-    private final int numOfCruisers = 1;
-    private final int numOfDestroyers = 1;
 
     List<Ship> shipList = new ArrayList<>();
 
     public Fleet() {
+
+        int numOfCarriers = 1;
+        int numOfBattleships = 1;
+        int numOfSubmarines = 1;
+        int numOfCruisers = 1;
+        int numOfDestroyers = 1;
 
         for (int i = 0; i < numOfCarriers; i++) {
             Ship ship = new Ship(ShipType.CARRIER);

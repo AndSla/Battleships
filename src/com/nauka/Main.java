@@ -14,19 +14,26 @@ public class Main {
 
         for (Ship ship : shipList) {
             ui.typeCoordinatesInCmdLine(ship);
+
             while (true) {
                 ShipCoordinates potentialCoordinates = new ShipCoordinates(ui.getCoordinatesFromCmdLine());
+
                 if (potentialCoordinates.areValid(ship)) {
-                    gameField.spawnShip(ship, potentialCoordinates);
-                    gameField.draw();
-                    // place ship onboard
-                    // Error! You placed it too close to another one. Try again:
-                    // draw board
-                    break;
+
+                    if (gameField.isLocationEmpty(ship, potentialCoordinates)) {
+                        gameField.spawnShip(ship, potentialCoordinates);
+                        gameField.draw();
+                        break;
+                    } else {
+                        ui.typeCoordinatesInCmdLine(gameField.getErrorMsg());
+                    }
+
                 } else {
                     ui.typeCoordinatesInCmdLine(potentialCoordinates.getErrorMsg());
                 }
+
             }
+
         }
 
     }
