@@ -5,6 +5,7 @@ public class ShipCoordinates {
     private int startCol;
     private int endRow;
     private int endCol;
+    private String errorMsg;
 
     public ShipCoordinates(String coordinatesFromCmdLine) {
         int[] shipCoordinates = convertToCoordinates(coordinatesFromCmdLine);
@@ -30,8 +31,30 @@ public class ShipCoordinates {
         return endCol;
     }
 
-    public boolean areValid() {
-        return true;
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
+
+    public boolean areValid(Ship ship) {
+        int shipLength = ship.getShipType().getLength();
+        String shipName = ship.getShipType().getName();
+
+        if (startRow == endRow || startCol == endCol) {
+            if (Math.abs(startRow - endRow) + 1 == shipLength || Math.abs(startCol - endCol) + 1 == shipLength) {
+                return true;
+            } else {
+                errorMsg = "Error! Wrong length of the " + shipName + "! Try again:";
+                return false;
+            }
+        } else {
+            errorMsg = "Error! Wrong ship location! Try again:";
+            return false;
+        }
+
     }
 
     private int[] convertToCoordinates(String cmdLine) {

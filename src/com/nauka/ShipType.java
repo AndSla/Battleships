@@ -1,20 +1,25 @@
 package com.nauka;
 
 public enum ShipType {
-    CARRIER(5),
-    BATTLESHIP(4),
-    SUBMARINE(3),
-    CRUISER(3),
-    DESTROYER(2);
+    CARRIER(5, "Aircraft Carrier"),
+    BATTLESHIP(4, "Battleship"),
+    SUBMARINE(3, "Submarine"),
+    CRUISER(3, "Cruiser"),
+    DESTROYER(2, "Destroyer");
 
     private final int length;
+    private final String name;
 
-    ShipType(int length) {
+    ShipType(int length, String name) {
         this.length = length;
+        this.name = name;
     }
 
     public int getLength() {
         return length;
     }
 
+    public String getName() {
+        return name;
+    }
 }

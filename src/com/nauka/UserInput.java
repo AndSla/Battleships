@@ -42,7 +42,9 @@ public class UserInput {
 
     }
 
-    public void typeCoordinatesInCmdLine() {
+    public void typeCoordinatesInCmdLine(String message) {
+
+        System.out.print("\n" + message + "\n\n" + "> ");
 
         while (true) {
             Scanner sc = new Scanner(System.in);

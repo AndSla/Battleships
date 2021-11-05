@@ -16,12 +16,12 @@ public class Main {
             ui.typeCoordinatesInCmdLine(ship);
             while (true) {
                 ShipCoordinates potentialCoordinates = new ShipCoordinates(ui.getCoordinatesFromCmdLine());
-                if (potentialCoordinates.areValid()) {
+                if (potentialCoordinates.areValid(ship)) {
                     // place ship onboard
                     // draw board
                     break;
                 } else {
-                    ui.typeCoordinatesInCmdLine();
+                    ui.typeCoordinatesInCmdLine(potentialCoordinates.getErrorMsg());
                 }
             }
         }
