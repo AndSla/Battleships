@@ -11,23 +11,10 @@ public class UserInput {
     }
 
     public void typeCoordinatesInCmdLine(Ship ship) {
+        String shipName = ship.getShipType().getName();
+        int shipLength = ship.getShipType().getLength();
 
-        switch (ship.getShipType()) {
-            case CARRIER:
-                System.out.print("\n" + "Enter the coordinates of the Aircraft Carrier (5 cells):" + "\n\n" + "> ");
-                break;
-            case BATTLESHIP:
-                System.out.print("\n" + "Enter the coordinates of the Battleship (4 cells):" + "\n\n" + "> ");
-                break;
-            case SUBMARINE:
-                System.out.print("\n" + "Enter the coordinates of the Submarine (3 cells):" + "\n\n" + "> ");
-                break;
-            case CRUISER:
-                System.out.print("\n" + "Enter the coordinates of the Cruiser (3 cells):" + "\n\n" + "> ");
-                break;
-            case DESTROYER:
-                System.out.print("\n" + "Enter the coordinates of the Destroyer (2 cells):" + "\n\n" + "> ");
-        }
+        System.out.print("\n" + "Enter the coordinates of the " + shipName + " (" + shipLength + " cells):" + "\n\n" + "> ");
 
         while (true) {
             Scanner sc = new Scanner(System.in);

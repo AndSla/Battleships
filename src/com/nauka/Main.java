@@ -17,7 +17,10 @@ public class Main {
             while (true) {
                 ShipCoordinates potentialCoordinates = new ShipCoordinates(ui.getCoordinatesFromCmdLine());
                 if (potentialCoordinates.areValid(ship)) {
+                    gameField.spawnShip(ship, potentialCoordinates);
+                    gameField.draw();
                     // place ship onboard
+                    // Error! You placed it too close to another one. Try again:
                     // draw board
                     break;
                 } else {

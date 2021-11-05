@@ -2,17 +2,13 @@ package com.nauka;
 
 public class ShipCoordinates {
     private int startRow;
-    private int startCol;
     private int endRow;
+    private int startCol;
     private int endCol;
     private String errorMsg;
 
     public ShipCoordinates(String coordinatesFromCmdLine) {
-        int[] shipCoordinates = convertToCoordinates(coordinatesFromCmdLine);
-        this.startRow = shipCoordinates[0];
-        this.startCol = shipCoordinates[1];
-        this.endRow = shipCoordinates[2];
-        this.endCol = shipCoordinates[3];
+        convertToCoordinates(coordinatesFromCmdLine);
     }
 
     public int getStartRow() {
@@ -44,7 +40,7 @@ public class ShipCoordinates {
         String shipName = ship.getShipType().getName();
 
         if (startRow == endRow || startCol == endCol) {
-            if (Math.abs(startRow - endRow) + 1 == shipLength || Math.abs(startCol - endCol) + 1 == shipLength) {
+            if (endRow - startRow + 1 == shipLength || endCol - startCol + 1 == shipLength) {
                 return true;
             } else {
                 errorMsg = "Error! Wrong length of the " + shipName + "! Try again:";
@@ -57,22 +53,25 @@ public class ShipCoordinates {
 
     }
 
-    private int[] convertToCoordinates(String cmdLine) {
+    // move this to constructor if it will occur useless
+    private void convertToCoordinates(String cmdLine) {
         cmdLine = cmdLine.trim();
         String[] shipEndsCoordinates = cmdLine.split("\\s+");
         String ship1stEndCoordinates = shipEndsCoordinates[0];
         String ship2ndEndCoordinates = shipEndsCoordinates[1];
         String startRowString = ship1stEndCoordinates.replaceAll("\\d+", "");
-        String startColString = ship1stEndCoordinates.replaceAll("\\D+", "");
         String endRowString = ship2ndEndCoordinates.replaceAll("\\d+", "");
+        String startColString = ship1stEndCoordinates.replaceAll("\\D+", "");
         String endColString = ship2ndEndCoordinates.replaceAll("\\D+", "");
 
-        int startRow = getNumberFromString(startRowString);
-        int startCol = getNumberFromString(startColString);
-        int endRow = getNumberFromString(endRowString);
-        int endCol = getNumberFromString(endColString);
+        int[] row = new int[]{getNumberFromString(startRowString), getNumberFromString(endRowString)};
+        int[] col = new int[]{getNumberFromString(startColString), getNumberFromString(endColString)};
 
-        return new int[]{startRow, startCol, endRow, endCol};
+        startRow = Math.min(row[0], row[1]);
+        endRow = Math.max(row[0], row[1]);
+        startCol = Math.min(col[0], col[1]);
+        endCol = Math.max(col[0], col[1]);
+
     }
 
     private int getNumberFromString(String numberAsString) {

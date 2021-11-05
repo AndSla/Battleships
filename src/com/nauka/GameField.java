@@ -5,6 +5,7 @@ public class GameField {
     String[] columnSymbols = new String[]{" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
     String[] rowSymbols = new String[]{" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
     String fogOfWarSymbol = "~";
+    String shipSymbol = "O";
 
     public GameField() {
         for (int i = 0; i < fields.length; i++) {
@@ -33,8 +34,20 @@ public class GameField {
         }
     }
 
-    boolean validCoordinates(String shipCoordinates) {
-        return true;
+    void spawnShip(Ship ship, ShipCoordinates coordinates) {
+        int shipLength = ship.getShipType().getLength();
+        int row = coordinates.getStartRow();
+        int col = coordinates.getStartCol();
+
+        for (int i = 0; i < shipLength; i++) {
+            if (coordinates.getStartRow() == coordinates.getEndRow()) {
+                fields[row][col] = shipSymbol;
+                col += 1;
+            } else {
+                fields[row][col] = shipSymbol;
+                row += 1;
+            }
+        }
 
     }
 
