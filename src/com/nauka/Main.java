@@ -36,6 +36,10 @@ public class Main {
 
         }
 
+        ui.startOfTheGame(gameField);
+        ui.typeShotCoordinates();
+        gameField.checkIfShotHits(ui.getCoordinatesFromCmdLine());
+
     }
 
 }

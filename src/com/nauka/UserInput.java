@@ -46,4 +46,24 @@ public class UserInput {
 
     }
 
+    public void startOfTheGame(GameField gameField) {
+        System.out.print("\n" + "The game starts!" + "\n\n");
+        gameField.draw();
+    }
+
+    public void typeShotCoordinates() {
+        System.out.print("\n" + "Take a shot!" + "\n\n" + "> ");
+
+        while (true) {
+            Scanner sc = new Scanner(System.in);
+            String cmdLine = sc.nextLine();
+            if (cmdLine.matches("\\s*[a-jA-J]([1-9]|10)\\s*")) {
+                this.coordinatesFromCmdLine = cmdLine;
+                break;
+            } else {
+                System.out.print("\n" + "Error! You entered the wrong coordinates! Try again:" + "\n\n" + "> ");
+            }
+        }
+    }
+
 }
