@@ -1,5 +1,6 @@
 package com.nauka;
 
+//get rid of this class maybe? - use ShipType enum instead
 public class Ship {
     private final ShipType shipType;
 

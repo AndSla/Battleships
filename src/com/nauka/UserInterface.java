@@ -46,9 +46,12 @@ public class UserInterface {
 
     }
 
-    public void startOfTheGame(GameField gameField) {
+    public void startOfTheGame() {
         System.out.print("\n" + "The game starts!" + "\n\n");
-        gameField.draw();
+    }
+
+    public void printMessage(String message) {
+        System.out.print("\n" + message + "\n\n");
     }
 
 }
