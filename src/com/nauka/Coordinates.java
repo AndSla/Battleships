@@ -1,14 +1,19 @@
 package com.nauka;
 
-public class ShipCoordinates {
+public class Coordinates {
     private int startRow;
     private int endRow;
     private int startCol;
     private int endCol;
     private String errorMsg;
 
-    public ShipCoordinates(String coordinatesFromCmdLine) {
-        convertToCoordinates(coordinatesFromCmdLine);
+    public Coordinates(String coordinatesFromCmdLine) {
+        if (coordinatesFromCmdLine.matches("\\s*[a-jA-J]([1-9]|10)\\s+[a-jA-J]([1-9]|10)\\s*")) {
+            convertToShipCoordinates(coordinatesFromCmdLine);
+        } else {
+            convertToShotCoordinates(coordinatesFromCmdLine);
+        }
+
     }
 
     public int getStartRow() {
@@ -49,8 +54,7 @@ public class ShipCoordinates {
 
     }
 
-    // move this to constructor if it will occur useless
-    private void convertToCoordinates(String cmdLine) {
+    private void convertToShipCoordinates(String cmdLine) {
         cmdLine = cmdLine.trim();
         String[] shipEndsCoordinates = cmdLine.split("\\s+");
         String ship1stEndCoordinates = shipEndsCoordinates[0];
@@ -67,6 +71,19 @@ public class ShipCoordinates {
         endRow = Math.max(row[0], row[1]);
         startCol = Math.min(col[0], col[1]);
         endCol = Math.max(col[0], col[1]);
+
+    }
+
+    private void convertToShotCoordinates(String cmdLine) {
+        cmdLine = cmdLine.trim();
+        String rowStr = cmdLine.replaceAll("\\d+", "");
+        String colStr = cmdLine.replaceAll("\\D+", "");
+
+        startRow = getNumberFromString(rowStr);
+        startCol = getNumberFromString(colStr);
+
+        endRow = -1;
+        endCol = -1;
 
     }
 

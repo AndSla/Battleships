@@ -6,17 +6,17 @@ public class Main {
 
     public static void main(String[] args) {
         GameField gameField = new GameField();
-        UserInput ui = new UserInput();
+        UserInterface ui = new UserInterface();
         Fleet fleet = new Fleet();
         List<Ship> shipList = fleet.getShipList();
 
         gameField.draw();
 
         for (Ship ship : shipList) {
-            ui.typeCoordinatesInCmdLine(ship);
+
+            Coordinates potentialCoordinates = new Coordinates(ui.getShipCoordinates(ship));
 
             while (true) {
-                ShipCoordinates potentialCoordinates = new ShipCoordinates(ui.getCoordinatesFromCmdLine());
 
                 if (potentialCoordinates.areValid(ship)) {
 
@@ -25,11 +25,13 @@ public class Main {
                         gameField.draw();
                         break;
                     } else {
-                        ui.typeCoordinatesInCmdLine(gameField.getErrorMsg());
+                        String shipNewCoordinates = ui.getShipCoordinates(gameField.getErrorMsg());
+                        potentialCoordinates = new Coordinates(shipNewCoordinates);
                     }
 
                 } else {
-                    ui.typeCoordinatesInCmdLine(potentialCoordinates.getErrorMsg());
+                    String shipNewCoordinates = ui.getShipCoordinates(potentialCoordinates.getErrorMsg());
+                    potentialCoordinates = new Coordinates(shipNewCoordinates);
                 }
 
             }
@@ -37,8 +39,9 @@ public class Main {
         }
 
         ui.startOfTheGame(gameField);
-        ui.typeShotCoordinates();
-        gameField.checkIfShotHits(ui.getCoordinatesFromCmdLine());
+        Coordinates shotCoordinates = new Coordinates(ui.getShotCoordinates());
+        gameField.checkIfShotHits(shotCoordinates);
+        gameField.draw();
 
     }
 

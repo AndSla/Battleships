@@ -7,6 +7,8 @@ public class GameField {
     String fogOfWarSymbol = "~";
     String shipSymbol = "O";
     String bannedFieldSymbol = ".";
+    String hitSymbol = "X";
+    String missSymbol = "M";
     String errorMsg;
 
     public GameField() {
@@ -40,7 +42,7 @@ public class GameField {
         }
     }
 
-    boolean isLocationEmpty(Ship ship, ShipCoordinates coordinates) {
+    boolean isLocationEmpty(Ship ship, Coordinates coordinates) {
         int shipLength = ship.getShipType().getLength();
         int row = coordinates.getStartRow();
         int col = coordinates.getStartCol();
@@ -71,7 +73,7 @@ public class GameField {
         return true;
     }
 
-    void markSpawnArea(ShipCoordinates coordinates) {
+    void markSpawnArea(Coordinates coordinates) {
         int startRow = coordinates.getStartRow();
         int endRow = coordinates.getEndRow();
         int startCol = coordinates.getStartCol();
@@ -89,7 +91,7 @@ public class GameField {
         }
     }
 
-    void spawnShip(Ship ship, ShipCoordinates coordinates) {
+    void spawnShip(Ship ship, Coordinates coordinates) {
         int shipLength = ship.getShipType().getLength();
         int row = coordinates.getStartRow();
         int col = coordinates.getStartCol();
@@ -108,58 +110,21 @@ public class GameField {
 
     }
 
-    void checkIfShotHits(String coordinates) {
-        String rowStr = coordinates.replaceAll("\\d+", "");
-        String colStr = coordinates.replaceAll("\\D+", "");
-        int row = getNumberFromString(rowStr);
-        int col = getNumberFromString(colStr);
+    void checkIfShotHits(Coordinates coordinates) {
+        int row = coordinates.getStartRow();
+        int col = coordinates.getStartCol();
 
         if (fields[row][col].equals(shipSymbol)) {
-            System.out.println("\n" + "You hit a ship!");
+            fields[row][col] = hitSymbol;
+            System.out.println("\n" + "You hit a ship!" + "\n");
         } else {
-            System.out.println("\n" + "You missed!");
+            fields[row][col] = missSymbol;
+            System.out.println("\n" + "You missed!" + "\n");
         }
     }
 
     public String getErrorMsg() {
         return errorMsg;
-    }
-
-    private int getNumberFromString(String numberAsString) {
-        switch (numberAsString) {
-            case "A":
-            case "a":
-                return 1;
-            case "B":
-            case "b":
-                return 2;
-            case "C":
-            case "c":
-                return 3;
-            case "D":
-            case "d":
-                return 4;
-            case "E":
-            case "e":
-                return 5;
-            case "F":
-            case "f":
-                return 6;
-            case "G":
-            case "g":
-                return 7;
-            case "H":
-            case "h":
-                return 8;
-            case "I":
-            case "i":
-                return 9;
-            case "J":
-            case "j":
-                return 10;
-            default:
-                return Integer.parseInt(numberAsString);
-        }
     }
 
 }
