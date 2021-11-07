@@ -42,6 +42,21 @@ public class GameField {
         }
     }
 
+    void drawHidden() {
+        for (int i = 0; i < fields.length; i++) {
+            for (int j = 0; j < fields[i].length; j++) {
+                if (i == 0 || j == 0) {
+                    System.out.print(fields[i][j] + " ");
+                } else if (fields[i][j].equals(hitSymbol) || fields[i][j].equals(missSymbol)) {
+                    System.out.print(fields[i][j] + " ");
+                } else {
+                    System.out.print(fogOfWarSymbol + " ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
     boolean isLocationEmpty(Ship ship, Coordinates coordinates) {
         int shipLength = ship.getShipType().getLength();
         int row = coordinates.getStartRow();
@@ -110,16 +125,16 @@ public class GameField {
 
     }
 
-    void checkIfShotHits(Coordinates coordinates) {
+    String checkIfShotHits(Coordinates coordinates) {
         int row = coordinates.getStartRow();
         int col = coordinates.getStartCol();
 
         if (fields[row][col].equals(shipSymbol)) {
             fields[row][col] = hitSymbol;
-            System.out.println("\n" + "You hit a ship!" + "\n");
+            return "You hit a ship!";
         } else {
             fields[row][col] = missSymbol;
-            System.out.println("\n" + "You missed!" + "\n");
+            return "You missed!";
         }
     }
 

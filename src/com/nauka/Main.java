@@ -38,9 +38,14 @@ public class Main {
 
         }
 
-        ui.startOfTheGame(gameField);
+        ui.startOfTheGame();
+        gameField.draw();
+
         Coordinates shotCoordinates = new Coordinates(ui.getShotCoordinates());
-        gameField.checkIfShotHits(shotCoordinates);
+        String message = gameField.checkIfShotHits(shotCoordinates);
+
+        gameField.drawHidden();
+        ui.printMessage(message);
         gameField.draw();
 
     }
