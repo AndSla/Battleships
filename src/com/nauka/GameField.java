@@ -9,7 +9,7 @@ public class GameField {
     String bannedFieldSymbol = ".";
     String hitSymbol = "X";
     String missSymbol = "M";
-    String errorMsg;
+    String message;
 
     public GameField() {
         for (int i = 0; i < fields.length; i++) {
@@ -67,7 +67,7 @@ public class GameField {
             if (coordinates.getStartRow() == coordinates.getEndRow()) {
 
                 if (fields[row][col].equals(bannedFieldSymbol)) {
-                    errorMsg = "Error! You placed it too close to another one. Try again:";
+                    message = "Error! You placed it too close to another one. Try again:";
                     return false;
                 } else {
                     col += 1;
@@ -76,7 +76,7 @@ public class GameField {
             } else {
 
                 if (fields[row][col].equals(bannedFieldSymbol)) {
-                    errorMsg = "Error! You placed it too close to another one. Try again:";
+                    message = "Error! You placed it too close to another one. Try again:";
                     return false;
                 } else {
                     row += 1;
@@ -125,21 +125,34 @@ public class GameField {
 
     }
 
-    String checkIfShotHits(Coordinates coordinates) {
+    void checkIfShotHitsTheShip(Coordinates coordinates) {
         int row = coordinates.getStartRow();
         int col = coordinates.getStartCol();
 
         if (fields[row][col].equals(shipSymbol)) {
             fields[row][col] = hitSymbol;
-            return "You hit a ship!";
+            message = "You hit a ship! Try again:";
         } else {
             fields[row][col] = missSymbol;
-            return "You missed!";
+            message = "You missed. Try again:";
         }
     }
 
-    public String getErrorMsg() {
-        return errorMsg;
+    boolean anyShipPartsLeftToHit() {
+        for (String[] row : fields) {
+            for (String field : row) {
+                if (field.equals(shipSymbol)) {
+                    return true;
+                }
+
+            }
+        }
+        message = "You sank the last ship. You won. Congratulations!";
+        return false;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
 }

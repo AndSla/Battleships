@@ -25,7 +25,7 @@ public class Main {
                         gameField.draw();
                         break;
                     } else {
-                        String shipNewCoordinates = ui.getShipCoordinates(gameField.getErrorMsg());
+                        String shipNewCoordinates = ui.getShipCoordinates(gameField.getMessage());
                         potentialCoordinates = new Coordinates(shipNewCoordinates);
                     }
 
@@ -40,13 +40,17 @@ public class Main {
 
         ui.startOfTheGame();
         gameField.drawHidden();
+        boolean printMessage = true;
 
-        Coordinates shotCoordinates = new Coordinates(ui.getShotCoordinates());
-        String message = gameField.checkIfShotHits(shotCoordinates);
+        while (gameField.anyShipPartsLeftToHit()) {
+            Coordinates shotCoordinates = new Coordinates(ui.getShotCoordinates(printMessage));
+            gameField.checkIfShotHitsTheShip(shotCoordinates);
+            gameField.drawHidden();
+            ui.printMessage(gameField.getMessage());
+            printMessage = false;
+        }
 
-        gameField.drawHidden();
-        ui.printMessage(message);
-        gameField.draw();
+        ui.printMessage(gameField.getMessage());
 
     }
 

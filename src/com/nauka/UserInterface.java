@@ -17,9 +17,14 @@ public class UserInterface {
         return getCoordinatesFromCmdLine("\n" + message + "\n\n" + "> ");
     }
 
-    public String getShotCoordinates() {
-        String message = "Take a shot!";
-        return getCoordinatesFromCmdLine("\n" + message + "\n\n" + "> ");
+    public String getShotCoordinates(boolean printMessage) {
+        if (printMessage) {
+            String message = "Take a shot!";
+            return getCoordinatesFromCmdLine("\n" + message + "\n\n" + "> ");
+        } else {
+            String message = "";
+            return getCoordinatesFromCmdLine(message);
+        }
     }
 
     public String getCoordinatesFromCmdLine(String message) {
@@ -27,7 +32,7 @@ public class UserInterface {
 
         System.out.print(message);
 
-        if (message.contains("shot")) {
+        if (message.contains("shot") || message.equals("")) {
             regex = "\\s*[a-jA-J]([1-9]|10)\\s*";
         } else {
             regex = "\\s*[a-jA-J]([1-9]|10)\\s+[a-jA-J]([1-9]|10)\\s*";
@@ -51,7 +56,7 @@ public class UserInterface {
     }
 
     public void printMessage(String message) {
-        System.out.print("\n" + message + "\n\n");
+        System.out.print("\n" + message + "\n\n" + "> ");
     }
 
 }
