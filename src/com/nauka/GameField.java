@@ -122,6 +122,9 @@ public class GameField {
                 message = "You sank the last ship. You won. Congratulations!";
             }
 
+        } else if (fields[shotCoordinates.getRow()][shotCoordinates.getCol()].equals(hitSymbol)) {
+            message = "You hit a ship! Try again:";
+
         } else {
 
             fields[shotCoordinates.getRow()][shotCoordinates.getCol()] = missSymbol;
