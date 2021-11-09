@@ -4,23 +4,21 @@ import java.util.Scanner;
 
 public class UserInterface {
 
-    private String coordinates;
-
     public String getShipCoordinates(Ship ship) {
-        String shipName = ship.getShipType().getName();
-        int shipLength = ship.getShipType().getLength();
+        String shipName = ship.getType().getName();
+        int shipLength = ship.getType().getLength();
         String message = "Enter the coordinates of the " + shipName + " (" + shipLength + " cells):";
-        return getCoordinatesFromCmdLine("\n" + message + "\n\n" + "> "); //message
+        return getCoordinatesFromCmdLine("\n" + message);
     }
 
     public String getShipCoordinates(String message) {
-        return getCoordinatesFromCmdLine("\n" + message + "\n\n" + "> ");
+        return getCoordinatesFromCmdLine("\n" + message);
     }
 
     public String getShotCoordinates(boolean printMessage) {
         if (printMessage) {
             String message = "Take a shot!";
-            return getCoordinatesFromCmdLine("\n" + message + "\n\n" + "> ");
+            return getCoordinatesFromCmdLine("\n" + message);
         } else {
             String message = "";
             return getCoordinatesFromCmdLine(message);
@@ -28,9 +26,11 @@ public class UserInterface {
     }
 
     public String getCoordinatesFromCmdLine(String message) {
-        String regex;
 
+        String regex;
         System.out.print(message);
+        System.out.print("\n\n" + "> ");
+
 
         if (message.contains("shot") || message.equals("")) {
             regex = "\\s*[a-jA-J]([1-9]|10)\\s*";
@@ -42,21 +42,20 @@ public class UserInterface {
             Scanner sc = new Scanner(System.in);
             String cmdLine = sc.nextLine();
             if (cmdLine.matches(regex)) {
-                this.coordinates = cmdLine;
-                return coordinates;
+                return cmdLine;
             } else {
-                System.out.print("\n" + "Error! You entered the wrong coordinates! Try again:" + "\n\n" + "> ");
+                System.out.print("\n" + "Error! You entered the wrong coordinates! Try again:");
             }
         }
 
     }
 
     public void startOfTheGame() {
-        System.out.print("\n" + "The game starts!" + "\n\n");
+        System.out.print("\n" + "The game starts!" + "\n");
     }
 
     public void printMessage(String message) {
-        System.out.print("\n" + message + "\n\n" + "> ");
+        System.out.print("\n" + message);
     }
 
 }

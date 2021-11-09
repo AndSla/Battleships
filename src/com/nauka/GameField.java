@@ -1,5 +1,8 @@
 package com.nauka;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameField {
     String[][] fields = new String[11][11];
     String[] columnSymbols = new String[]{" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
@@ -10,6 +13,7 @@ public class GameField {
     String hitSymbol = "X";
     String missSymbol = "M";
     String message;
+    List<Ship> spawnedShips = new ArrayList<>();
 
     public GameField() {
         for (int i = 0; i < fields.length; i++) {
@@ -30,6 +34,7 @@ public class GameField {
     }
 
     void draw() {
+        System.out.println();
         for (String[] row : fields) {
             for (String field : row) {
                 if (field.equals(bannedFieldSymbol)) {
@@ -43,6 +48,7 @@ public class GameField {
     }
 
     void drawHidden() {
+        System.out.println();
         for (int i = 0; i < fields.length; i++) {
             for (int j = 0; j < fields[i].length; j++) {
                 if (i == 0 || j == 0) {
@@ -57,42 +63,27 @@ public class GameField {
         }
     }
 
-    boolean isLocationEmpty(Ship ship, Coordinates coordinates) {
-        int shipLength = ship.getShipType().getLength();
-        int row = coordinates.getStartRow();
-        int col = coordinates.getStartCol();
+    boolean isLocationEmpty(ShipCoordinates shipCoordinates) {
+        List<Coordinates> shipFields = shipCoordinates.getFields();
 
-        for (int i = 0; i < shipLength; i++) {
-
-            if (coordinates.getStartRow() == coordinates.getEndRow()) {
-
-                if (fields[row][col].equals(bannedFieldSymbol)) {
-                    message = "Error! You placed it too close to another one. Try again:";
-                    return false;
-                } else {
-                    col += 1;
-                }
-
-            } else {
-
-                if (fields[row][col].equals(bannedFieldSymbol)) {
-                    message = "Error! You placed it too close to another one. Try again:";
-                    return false;
-                } else {
-                    row += 1;
-                }
-
+        for (Coordinates shipField : shipFields) {
+            if (fields[shipField.getRow()][shipField.getCol()].equals(bannedFieldSymbol)) {
+                message = "Error! You placed it too close to another one. Try again:";
+                return false;
             }
         }
 
         return true;
     }
 
-    void markSpawnArea(Coordinates coordinates) {
-        int startRow = coordinates.getStartRow();
-        int endRow = coordinates.getEndRow();
-        int startCol = coordinates.getStartCol();
-        int endCol = coordinates.getEndCol();
+    void markSpawnArea(List<Coordinates> shipFields) {
+        int firstField = 0;
+        int lastField = shipFields.size() - 1;
+
+        int startRow = shipFields.get(firstField).getRow();
+        int endRow = shipFields.get(lastField).getRow();
+        int startCol = shipFields.get(firstField).getCol();
+        int endCol = shipFields.get(lastField).getCol();
 
         int fromRow = Math.max(1, startRow - 1);
         int toRow = Math.min(10, endRow + 1);
@@ -106,49 +97,54 @@ public class GameField {
         }
     }
 
-    void spawnShip(Ship ship, Coordinates coordinates) {
-        int shipLength = ship.getShipType().getLength();
-        int row = coordinates.getStartRow();
-        int col = coordinates.getStartCol();
-
-        markSpawnArea(coordinates);
-
-        for (int i = 0; i < shipLength; i++) {
-            if (coordinates.getStartRow() == coordinates.getEndRow()) {
-                fields[row][col] = shipSymbol;
-                col += 1;
-            } else {
-                fields[row][col] = shipSymbol;
-                row += 1;
-            }
+    void spawnShip(Ship ship) {
+        List<Coordinates> shipFields = ship.getFields();
+        markSpawnArea(shipFields);
+        for (Coordinates shipField : shipFields) {
+            fields[shipField.getRow()][shipField.getCol()] = shipSymbol;
         }
+        spawnedShips.add(ship);
 
     }
 
-    void checkIfShotHitsTheShip(Coordinates coordinates) {
-        int row = coordinates.getStartRow();
-        int col = coordinates.getStartCol();
+    void checkIfShotHitsTheShip(Coordinates shotCoordinates) {
 
-        if (fields[row][col].equals(shipSymbol)) {
-            fields[row][col] = hitSymbol;
+        if (fields[shotCoordinates.getRow()][shotCoordinates.getCol()].equals(shipSymbol)) {
+
+            fields[shotCoordinates.getRow()][shotCoordinates.getCol()] = hitSymbol;
             message = "You hit a ship! Try again:";
+
+            if (checkIfShipSank(shotCoordinates)) {
+                message = "You sank a ship! Specify a new target:";
+            }
+
+            if (checkIfAllShipsSank()) {
+                message = "You sank the last ship. You won. Congratulations!";
+            }
+
         } else {
-            fields[row][col] = missSymbol;
+
+            fields[shotCoordinates.getRow()][shotCoordinates.getCol()] = missSymbol;
             message = "You missed. Try again:";
+
         }
+
     }
 
-    boolean anyShipPartsLeftToHit() {
-        for (String[] row : fields) {
-            for (String field : row) {
-                if (field.equals(shipSymbol)) {
-                    return true;
-                }
-
+    boolean checkIfShipSank(Coordinates shotCoordinates) {
+        for (Ship spawnedShip : spawnedShips) {
+            List<Coordinates> shipFields = spawnedShip.getFields();
+            shipFields.removeIf(shipField -> shipField.equals(shotCoordinates));
+            if (shipFields.size() == 0) {
+                return true;
             }
         }
-        message = "You sank the last ship. You won. Congratulations!";
         return false;
+    }
+
+    boolean checkIfAllShipsSank() {
+        spawnedShips.removeIf(spawnedShip -> spawnedShip.getFields().size() == 0);
+        return spawnedShips.size() == 0;
     }
 
     public String getMessage() {

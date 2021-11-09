@@ -1,90 +1,28 @@
 package com.nauka;
 
 public class Coordinates {
-    private int startRow;
-    private int endRow;
-    private int startCol;
-    private int endCol;
-    private String errorMsg;
+    private final int row;
+    private final int col;
+
+    public Coordinates(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
 
     public Coordinates(String coordinatesFromCmdLine) {
-        if (coordinatesFromCmdLine.matches("\\s*[a-jA-J]([1-9]|10)\\s+[a-jA-J]([1-9]|10)\\s*")) {
-            convertToShipCoordinates(coordinatesFromCmdLine);
-        } else {
-            convertToShotCoordinates(coordinatesFromCmdLine);
-        }
-
+        String coordinates = coordinatesFromCmdLine.trim();
+        String rowStr = coordinates.replaceAll("\\d+", "");
+        String colStr = coordinates.replaceAll("\\D+", "");
+        this.row = getNumberFromString(rowStr);
+        this.col = getNumberFromString(colStr);
     }
 
-    public int getStartRow() {
-        return startRow;
+    public int getRow() {
+        return row;
     }
 
-    public int getStartCol() {
-        return startCol;
-    }
-
-    public int getEndRow() {
-        return endRow;
-    }
-
-    public int getEndCol() {
-        return endCol;
-    }
-
-    public String getErrorMsg() {
-        return errorMsg;
-    }
-
-    public boolean areValid(Ship ship) {
-        int shipLength = ship.getShipType().getLength();
-        String shipName = ship.getShipType().getName();
-
-        if (startRow == endRow || startCol == endCol) {
-            if (endRow - startRow + 1 == shipLength || endCol - startCol + 1 == shipLength) {
-                return true;
-            } else {
-                errorMsg = "Error! Wrong length of the " + shipName + "! Try again:";
-                return false;
-            }
-        } else {
-            errorMsg = "Error! Wrong ship location! Try again:";
-            return false;
-        }
-
-    }
-
-    private void convertToShipCoordinates(String cmdLine) {
-        cmdLine = cmdLine.trim();
-        String[] shipEndsCoordinates = cmdLine.split("\\s+");
-        String ship1stEndCoordinates = shipEndsCoordinates[0];
-        String ship2ndEndCoordinates = shipEndsCoordinates[1];
-        String startRowString = ship1stEndCoordinates.replaceAll("\\d+", "");
-        String endRowString = ship2ndEndCoordinates.replaceAll("\\d+", "");
-        String startColString = ship1stEndCoordinates.replaceAll("\\D+", "");
-        String endColString = ship2ndEndCoordinates.replaceAll("\\D+", "");
-
-        int[] row = new int[]{getNumberFromString(startRowString), getNumberFromString(endRowString)};
-        int[] col = new int[]{getNumberFromString(startColString), getNumberFromString(endColString)};
-
-        startRow = Math.min(row[0], row[1]);
-        endRow = Math.max(row[0], row[1]);
-        startCol = Math.min(col[0], col[1]);
-        endCol = Math.max(col[0], col[1]);
-
-    }
-
-    private void convertToShotCoordinates(String cmdLine) {
-        cmdLine = cmdLine.trim();
-        String rowStr = cmdLine.replaceAll("\\d+", "");
-        String colStr = cmdLine.replaceAll("\\D+", "");
-
-        startRow = getNumberFromString(rowStr);
-        startCol = getNumberFromString(colStr);
-
-        endRow = -1;
-        endCol = -1;
-
+    public int getCol() {
+        return col;
     }
 
     private int getNumberFromString(String numberAsString) {
@@ -122,6 +60,24 @@ public class Coordinates {
             default:
                 return Integer.parseInt(numberAsString);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Coordinates that = (Coordinates) o;
+
+        if (row != that.row) return false;
+        return col == that.col;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = row;
+        result = 31 * result + col;
+        return result;
     }
 
 }

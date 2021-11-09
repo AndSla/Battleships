@@ -14,24 +14,25 @@ public class Main {
 
         for (Ship ship : shipList) {
 
-            Coordinates potentialCoordinates = new Coordinates(ui.getShipCoordinates(ship));
+            ShipCoordinates potentialCoordinates = new ShipCoordinates(ui.getShipCoordinates(ship));
 
             while (true) {
 
                 if (potentialCoordinates.areValid(ship)) {
 
-                    if (gameField.isLocationEmpty(ship, potentialCoordinates)) {
-                        gameField.spawnShip(ship, potentialCoordinates);
+                    if (gameField.isLocationEmpty(potentialCoordinates)) {
+                        ship.setFields(potentialCoordinates);
+                        gameField.spawnShip(ship);
                         gameField.draw();
                         break;
                     } else {
                         String shipNewCoordinates = ui.getShipCoordinates(gameField.getMessage());
-                        potentialCoordinates = new Coordinates(shipNewCoordinates);
+                        potentialCoordinates = new ShipCoordinates(shipNewCoordinates);
                     }
 
                 } else {
                     String shipNewCoordinates = ui.getShipCoordinates(potentialCoordinates.getErrorMsg());
-                    potentialCoordinates = new Coordinates(shipNewCoordinates);
+                    potentialCoordinates = new ShipCoordinates(shipNewCoordinates);
                 }
 
             }
@@ -40,17 +41,15 @@ public class Main {
 
         ui.startOfTheGame();
         gameField.drawHidden();
-        boolean printMessage = true;
+        Coordinates shotCoordinates = new Coordinates(ui.getShotCoordinates(true));
 
-        while (gameField.anyShipPartsLeftToHit()) {
-            Coordinates shotCoordinates = new Coordinates(ui.getShotCoordinates(printMessage));
+        while (true) {
             gameField.checkIfShotHitsTheShip(shotCoordinates);
             gameField.drawHidden();
             ui.printMessage(gameField.getMessage());
-            printMessage = false;
+            if (gameField.checkIfAllShipsSank()) break;
+            shotCoordinates = new Coordinates(ui.getShotCoordinates(false));
         }
-
-        ui.printMessage(gameField.getMessage());
 
     }
 
