@@ -34,7 +34,6 @@ public class GameField {
     }
 
     void draw() {
-        //System.out.println();
         for (String[] row : fields) {
             for (String field : row) {
                 if (field.equals(bannedFieldSymbol)) {
@@ -48,7 +47,6 @@ public class GameField {
     }
 
     void drawHidden() {
-        //System.out.println();
         for (int i = 0; i < fields.length; i++) {
             for (int j = 0; j < fields[i].length; j++) {
                 if (i == 0 || j == 0) {

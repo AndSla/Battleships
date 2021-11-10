@@ -16,22 +16,23 @@ public class UserInterface {
     }
 
     public String getShotCoordinates() {
-        String message = "";
+        String message = "Shot";
         return getCoordinatesFromCmdLine(message);
     }
 
     public String getCoordinatesFromCmdLine(String message) {
 
         String regex;
-        System.out.print(message);
-        System.out.print("\n\n" + "> ");
 
-
-        if (message.contains("shot") || message.equals("")) {
+        if (message.equals("Shot")) {
+            message = "";
             regex = "\\s*[a-jA-J]([1-9]|10)\\s*";
         } else {
             regex = "\\s*[a-jA-J]([1-9]|10)\\s+[a-jA-J]([1-9]|10)\\s*";
         }
+
+        System.out.print(message);
+        System.out.print("\n\n" + "> ");
 
         while (true) {
             Scanner sc = new Scanner(System.in);
