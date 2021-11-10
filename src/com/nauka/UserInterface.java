@@ -15,14 +15,9 @@ public class UserInterface {
         return getCoordinatesFromCmdLine("\n" + message);
     }
 
-    public String getShotCoordinates(boolean printMessage) {
-        if (printMessage) {
-            String message = "Take a shot!";
-            return getCoordinatesFromCmdLine("\n" + message);
-        } else {
-            String message = "";
-            return getCoordinatesFromCmdLine(message);
-        }
+    public String getShotCoordinates() {
+        String message = "";
+        return getCoordinatesFromCmdLine(message);
     }
 
     public String getCoordinatesFromCmdLine(String message) {
@@ -44,18 +39,29 @@ public class UserInterface {
             if (cmdLine.matches(regex)) {
                 return cmdLine;
             } else {
-                System.out.print("\n" + "Error! You entered the wrong coordinates! Try again:");
+                System.out.print("\n" + "Error! You entered the wrong coordinates! Try again:" + "\n\n" + "> ");
             }
         }
 
     }
 
-    public void startOfTheGame() {
-        System.out.print("\n" + "The game starts!" + "\n");
+    public void startPlacingShips(String playerName) {
+        System.out.print(playerName + ", place your ships on the game field" + "\n\n");
+    }
+
+    public void startOfTheGame(String activePlayerName) {
+        System.out.print("\n" + activePlayerName + ", it's your turn:");
     }
 
     public void printMessage(String message) {
         System.out.print("\n" + message);
+    }
+
+    public void pause() {
+        System.out.print("\n" + "Press Enter and pass the move to another player" + "\n" + "...");
+        Scanner sc = new Scanner(System.in);
+        sc.nextLine();
+        System.out.println();
     }
 
 }

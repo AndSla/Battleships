@@ -1,54 +1,42 @@
 package com.nauka;
 
-import java.util.List;
-
 public class Main {
 
     public static void main(String[] args) {
-        GameField gameField = new GameField();
         UserInterface ui = new UserInterface();
         Fleet fleet = new Fleet();
-        List<Ship> shipList = fleet.getShipList();
+        Player player1 = new Player("Player 1");
+        Player player2 = new Player("Player 2");
 
-        gameField.draw();
+        player1.setGameField(player1.placeYourShips(ui, fleet));
+        ui.pause();
+        player2.setGameField(player2.placeYourShips(ui, fleet));
+        ui.pause();
 
-        for (Ship ship : shipList) {
-
-            ShipCoordinates potentialCoordinates = new ShipCoordinates(ui.getShipCoordinates(ship));
-
-            while (true) {
-
-                if (potentialCoordinates.areValid(ship)) {
-
-                    if (gameField.isLocationEmpty(potentialCoordinates)) {
-                        ship.setFields(potentialCoordinates);
-                        gameField.spawnShip(ship);
-                        gameField.draw();
-                        break;
-                    } else {
-                        String shipNewCoordinates = ui.getShipCoordinates(gameField.getMessage());
-                        potentialCoordinates = new ShipCoordinates(shipNewCoordinates);
-                    }
-
-                } else {
-                    String shipNewCoordinates = ui.getShipCoordinates(potentialCoordinates.getErrorMsg());
-                    potentialCoordinates = new ShipCoordinates(shipNewCoordinates);
-                }
-
-            }
-
-        }
-
-        ui.startOfTheGame();
-        gameField.drawHidden();
-        Coordinates shotCoordinates = new Coordinates(ui.getShotCoordinates(true));
+        Player activePlayer = player1;
+        Player otherPlayer = player2;
 
         while (true) {
-            gameField.checkIfShotHitsTheShip(shotCoordinates);
-            gameField.drawHidden();
-            ui.printMessage(gameField.getMessage());
-            if (gameField.checkIfAllShipsSank()) break;
-            shotCoordinates = new Coordinates(ui.getShotCoordinates(false));
+
+            GameField playerField = activePlayer.getGameField();
+            GameField enemyField = otherPlayer.getGameField();
+
+            enemyField.drawHidden();
+            playerField.draw();
+
+            ui.startOfTheGame(activePlayer.getName());
+            Coordinates shotCoordinates = new Coordinates(ui.getShotCoordinates());
+            enemyField.checkIfShotHitsTheShip(shotCoordinates);
+            ui.printMessage(enemyField.getMessage());
+
+            if (enemyField.checkIfAllShipsSank()) break;
+
+            ui.pause();
+
+            Player tempPlayer = activePlayer;
+            activePlayer = otherPlayer;
+            otherPlayer = tempPlayer;
+
         }
 
     }
