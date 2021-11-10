@@ -42,6 +42,8 @@ public class Player {
 
             }
 
+            ui.pause();
+
         }
 
         return gameField;
